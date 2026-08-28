@@ -2,10 +2,12 @@ package com.example.ecommerceapplication.PayLoad;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Sort;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 
 public class PageRequestDto {
     private Integer page = 0;

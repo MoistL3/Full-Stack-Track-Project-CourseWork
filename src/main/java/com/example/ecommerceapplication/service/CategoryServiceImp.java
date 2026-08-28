@@ -4,8 +4,12 @@ import com.example.ecommerceapplication.Exceptions.APIException;
 import com.example.ecommerceapplication.Exceptions.ResourceNotFoundException;
 import com.example.ecommerceapplication.PayLoad.CategoryDto;
 import com.example.ecommerceapplication.PayLoad.CategoryResponse;
+import com.example.ecommerceapplication.PayLoad.PageRequestDto;
+import com.example.ecommerceapplication.PayLoad.ProductDto;
 import com.example.ecommerceapplication.Repository.CategoryRepository;
+import com.example.ecommerceapplication.Response.PageResponseDto;
 import com.example.ecommerceapplication.model.Category;
+import com.example.ecommerceapplication.model.Product;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,18 +25,30 @@ public class CategoryServiceImp implements CategoryService{
 
     private CategoryRepository categoryRepository;
     private ModelMapper modelMapper;
+    private PaginationService paginationService ;
 
 
-    public CategoryServiceImp(CategoryRepository categoryRepository, ModelMapper modelMapper){
+    public CategoryServiceImp(CategoryRepository categoryRepository
+            , ModelMapper modelMapper
+            , PaginationService paginationService){
 
         this.categoryRepository = categoryRepository;
         this.modelMapper = modelMapper ;
+        this.paginationService = paginationService ;
     }
 
 
     @Override
-    public CategoryResponse getAllCategories(Integer pageNumber , Integer pageSize ,String sortBy , String sortOrder) {
-        Sort sortByAnOrder = sortOrder.equalsIgnoreCase("asc") ?
+    public PageResponseDto <Object> getAllCategories(PageRequestDto request) {
+
+
+        Pageable pageable = paginationService.buildPageable(request);
+        Page <Category> categoryPage= categoryRepository.findAll(pageable);
+        return paginationService.toPageResponse(categoryPage, category -> modelMapper.map(category , CategoryDto.class));
+
+
+
+       /* Sort sortByAnOrder = sortOrder.equalsIgnoreCase("asc") ?
                 Sort.by(sortBy).ascending() :
                 Sort.by(sortBy).descending();
         Pageable pageDetails = PageRequest.of(pageNumber , pageSize , sortByAnOrder);
@@ -41,8 +57,6 @@ public class CategoryServiceImp implements CategoryService{
         List<Category> categories = categoryPage.getContent();
         if(categories.isEmpty()){
             throw new APIException("you haven't added any categories yet");
-        }
-
 
         List<CategoryDto> categoryDtos = categories.stream()
                 .map(category -> modelMapper.map(category , CategoryDto.class))
@@ -55,9 +69,13 @@ public class CategoryServiceImp implements CategoryService{
         categoryResponse.setTotalElements(categoryPage.getTotalElements());
         categoryResponse.setLastPage(categoryPage.isLast());
 
-        return categoryResponse;
+        return categoryResponse; */
+        }
 
-    }
+
+
+
+
 
     @Override
     public CategoryDto addCategory(CategoryDto categoryDto) {

@@ -1,10 +1,8 @@
 package com.example.ecommerceapplication.service;
-
 import com.example.ecommerceapplication.Exceptions.APIException;
 import com.example.ecommerceapplication.Exceptions.ResourceNotFoundException;
 import com.example.ecommerceapplication.PayLoad.PageRequestDto;
 import com.example.ecommerceapplication.PayLoad.ProductDto;
-import com.example.ecommerceapplication.PayLoad.ProductResponse;
 import com.example.ecommerceapplication.Repository.CategoryRepository;
 import com.example.ecommerceapplication.Repository.ProductRepository;
 import com.example.ecommerceapplication.Response.PageResponseDto;
@@ -13,17 +11,13 @@ import com.example.ecommerceapplication.model.Product;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.util.List;
 
 
 @Service
-
 public class ProductServiceImpl implements ProductService{
     private ProductRepository productRepository;
     private ModelMapper productMapper ;
@@ -48,8 +42,8 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public ProductDto addProduct(ProductDto productDto, Long categoryId) {
-        Category category = categoryRepository.findById(categoryId).
-                orElseThrow(() -> new ResourceNotFoundException("category" , "categoryId" , categoryId));
+        Category category = categoryRepository.findById(categoryId)
+                . orElseThrow(() -> new ResourceNotFoundException("category" , "categoryId" , categoryId));
         if(productRepository.existsByProductNameIgnoreCaseAndCategory(productDto.getProductName() , category)){
             throw new APIException("Product with Name "+ productDto.getProductName()+"Already exist in category "+category.getCategoryName());
         }
@@ -118,8 +112,8 @@ public class ProductServiceImpl implements ProductService{
                 .orElseThrow(() -> new ResourceNotFoundException("Product" , "Product ID : " , productToUpdateId));
 
 
-        Category category = categoryRepository.findById(productDto.getCategory().getCategoryId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Category" , "Category ID : " , productDto.getCategory().getCategoryId()));
+        Category category = categoryRepository.findById(productDto.getCategory().getId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Category" , "Category ID : " , productDto.getCategory().getId()));
 
         productToUpdate.setProductName(productDto.getProductName());
         productToUpdate.setPrice(productDto.getPrice());

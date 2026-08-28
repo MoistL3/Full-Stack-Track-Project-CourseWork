@@ -1,5 +1,6 @@
 package com.example.ecommerceapplication.controller;
 
+import com.example.ecommerceapplication.PayLoad.PageRequestDto;
 import com.example.ecommerceapplication.Response.ApiResponse;
 import com.example.ecommerceapplication.PayLoad.CategoryDto;
 import com.example.ecommerceapplication.PayLoad.CategoryResponse;
@@ -37,9 +38,13 @@ public class CategoryController {
             @RequestParam (name = "sortOrder" , defaultValue = AppConstants.SORT_DIR , required = false) String sortOrder
             ){
 
-        CategoryResponse categoryResponse =categoryService.getAllCategories(pageNumber , pageSize , sortBy , sortOrder);
-        return ResponseEntity.ok()
-              .body(new ApiResponse<>(true , "all categories" , categoryResponse ));
+        PageRequestDto pageRequestDto = new PageRequestDto(pageNumber , pageSize , sortBy ,sortOrder);
+        return ResponseEntity
+                .ok()
+                .body(new ApiResponse<>(true , "all products" , categoryService.getAllCategories(pageRequestDto)));
+
+
+
     }
 
     @PostMapping("/admin/categories")

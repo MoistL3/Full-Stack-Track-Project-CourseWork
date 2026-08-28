@@ -1,15 +1,14 @@
 package com.example.ecommerceapplication.service;
 
 import com.example.ecommerceapplication.PayLoad.CategoryDto;
-import com.example.ecommerceapplication.PayLoad.CategoryResponse;
-import com.example.ecommerceapplication.model.Category;
+import com.example.ecommerceapplication.PayLoad.PageRequestDto;
+import com.example.ecommerceapplication.Response.PageResponseDto;
+import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-
+@Service
 public interface CategoryService {
-    CategoryResponse getAllCategories(Integer pageNumber , Integer pageSize, String sortBy , String sortOrder);
+    PageResponseDto<Object> getAllCategories(PageRequestDto PageRequestDto);
 
     CategoryDto addCategory(CategoryDto categoryDto);
     CategoryDto deleteCategory(Long categoryId);

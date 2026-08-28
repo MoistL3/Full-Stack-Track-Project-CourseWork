@@ -20,7 +20,7 @@ import java.util.List;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoryId ;
+    private Long id ;
     @NotBlank
     @Size(min = 5 , message = "category names must be at least 5 characters")
     private String categoryName;

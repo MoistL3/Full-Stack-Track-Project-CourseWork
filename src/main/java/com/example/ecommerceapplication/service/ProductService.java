@@ -5,10 +5,11 @@ import com.example.ecommerceapplication.PayLoad.ProductDto;
 import com.example.ecommerceapplication.PayLoad.ProductResponse;
 import com.example.ecommerceapplication.Response.PageResponseDto;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-
+@Service
 public interface ProductService {
     ProductDto addProduct(ProductDto productDto , Long categoryId);
     PageResponseDto<Object> getAllProducts(PageRequestDto request) ;
