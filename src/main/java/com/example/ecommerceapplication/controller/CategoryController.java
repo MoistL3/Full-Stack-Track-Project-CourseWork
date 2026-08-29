@@ -9,6 +9,7 @@ import com.example.ecommerceapplication.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +49,7 @@ public class CategoryController {
     }
 
     @PostMapping("/admin/categories")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> addCategory(@Valid @RequestBody CategoryDto categoryDto){
         CategoryDto savedCategoryDto  =  categoryService.addCategory(categoryDto);
        return ResponseEntity.status(201).body(new ApiResponse<>(true , "category added successfully",savedCategoryDto));
