@@ -24,9 +24,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ApiResponse<>(false , "An unexpected error occurred. Please try again later.")) ;
     }
-
-
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e){
         Map<String , String> response = new HashMap<>();
