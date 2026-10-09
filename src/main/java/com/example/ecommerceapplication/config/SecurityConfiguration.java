@@ -4,7 +4,9 @@ package com.example.ecommerceapplication.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,29 +28,32 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
-        http.csrf(csrf-> csrf.disable());
-        http.authorizeHttpRequests((requests) -> ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)requests.anyRequest()).authenticated());
+        http.csrf(csrf -> csrf.disable());
+        http.authorizeHttpRequests((requests) -> ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) requests.anyRequest()).authenticated());
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         // http.formLogin(Customizer.withDefaults());
         http.httpBasic(Customizer.withDefaults());
-        http.headers(headers-> headers.frameOptions( frame -> frame.sameOrigin()));
-        return (SecurityFilterChain)http.build();
+        http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
+        return (SecurityFilterChain) http.build();
     }
 
     @Bean
-  public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
         UserDetails user = User.withUsername("user")
-                .password(passwordEncoder().encode("user")).roles("USER").build() ;
-
+                .password(passwordEncoder().encode("user")).roles("USER").build();
         UserDetails admin = User.withUsername("admin")
-                .password(passwordEncoder().encode("admin")).roles("ADMIN").build() ;
-
-        return new InMemoryUserDetailsManager(user , admin) ;
+                .password(passwordEncoder().encode("admin")).roles("ADMIN").build();
+        return new InMemoryUserDetailsManager(user, admin);
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 }
