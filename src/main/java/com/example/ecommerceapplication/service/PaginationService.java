@@ -2,7 +2,6 @@ package com.example.ecommerceapplication.service;
 
 import com.example.ecommerceapplication.PayLoad.PageRequestDto;
 import com.example.ecommerceapplication.Response.PageResponseDto;
-import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
